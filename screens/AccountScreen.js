@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { disableExpoCliLogging } from "expo/build/logs/Logs";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,7 +12,7 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { API, API_WHOAMI } from "../constants/API";
-import { toggleDarkMode } from "../redux/ducks/accountPrefs";
+import { resetDarkMode, toggleDarkMode } from "../redux/ducks/accountPrefs";
 import { signOutAction } from "../redux/ducks/blogAuth";
 import { darkStyles, lightStyles } from "../styles/commonStyles";
 
@@ -50,6 +51,7 @@ export default function AccountScreen({ navigation }) {
   function signOut() {
     AsyncStorage.removeItem("token");
     dispatch(signOutAction());
+    dispatch(resetDarkMode());
   }
 
   useEffect(() => {

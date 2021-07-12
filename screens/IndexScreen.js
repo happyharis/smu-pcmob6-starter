@@ -10,14 +10,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS } from "../constants/API";
-import { lightStyles } from "../styles/commonStyles";
+import { darkStyles, lightStyles } from "../styles/commonStyles";
 import { useSelector } from "react-redux";
 
 export default function IndexScreen({ navigation, route }) {
   const [posts, setPosts] = useState([]);
-  const styles = lightStyles;
   const [refreshing, setRefreshing] = useState(false);
   const isDarkMode = useSelector((state) => state.prefs.darkMode);
+  const styles = isDarkMode ? darkStyles : lightStyles;
 
   async function onRefresh() {
     setRefreshing(true);
