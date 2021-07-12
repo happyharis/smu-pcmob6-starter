@@ -11,11 +11,13 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS } from "../constants/API";
 import { lightStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
 
 export default function IndexScreen({ navigation, route }) {
   const [posts, setPosts] = useState([]);
   const styles = lightStyles;
   const [refreshing, setRefreshing] = useState(false);
+  const isDarkMode = useSelector((state) => state.prefs.darkMode);
 
   async function onRefresh() {
     setRefreshing(true);
@@ -101,7 +103,10 @@ export default function IndexScreen({ navigation, route }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View
+      style={(styles.container, isDarkMode && { backgroundColor: "black" })}
+    >
+      <Text style={isDarkMode && { color: "white" }}>Index Screen</Text>
       <FlatList
         data={posts}
         renderItem={renderItem}

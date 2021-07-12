@@ -2,14 +2,23 @@ import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
-import { useDispatch } from "react-redux";
+import {
+  ActivityIndicator,
+  Switch,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { API, API_WHOAMI } from "../constants/API";
+import { toggleDarkMode } from "../redux/ducks/accountPrefs";
 import { signOutAction } from "../redux/ducks/blogAuth";
 import { lightStyles } from "../styles/commonStyles";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
+  const [isEnabled, setIsEnabled] = useState(false);
+  const isDarkMode = useSelector((state) => state.prefs.darkMode);
   const dispatch = useDispatch();
 
   const styles = lightStyles;
@@ -70,7 +79,16 @@ export default function AccountScreen({ navigation }) {
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
       <Text style={{ marginTop: 20 }}>Account Screen</Text>
+
       <Text>{username}</Text>
+      <View>
+        <Text>Dark Mode</Text>
+        <Switch
+          value={isDarkMode}
+          onValueChange={() => dispatch(toggleDarkMode())}
+        />
+      </View>
+      <Text>{isDarkMode ? "Dark mode ON" : "Dark mode OFF"}</Text>
     </View>
   );
 }
