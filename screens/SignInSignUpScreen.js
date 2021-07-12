@@ -37,6 +37,33 @@ export default function SignInSignUpScreen({ navigation }) {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
 
+  async function signUp() {
+    if (password != confirmPassword) {
+      setErrorText("Your passwords don't match. Check and try again.");
+    } else {
+      try {
+        setLoading(true);
+        const response = await axios.post(API + API_LOGIN, {
+          username,
+          password,
+        });
+        if (response.data.Error) {
+          setErrorText(response.data.Error);
+          setLoading(false);
+        } else {
+          console.log("Success signing up");
+          setLoading(false);
+          login();
+        }
+      } catch {
+        setLoading(false);
+        console.log("Error loggin in!");
+        console.log(error.response);
+        setErrorText(error.response.data.description);
+      }
+    }
+  }
+
   async function login() {
     console.log("---- Login time ----");
     Keyboard.dismiss();
@@ -44,7 +71,7 @@ export default function SignInSignUpScreen({ navigation }) {
     try {
       setLoading(true);
       const response = await axios.post(API + API_LOGIN, {
-        username,
+        username: username.toLowerCase(),
         password,
       });
       console.log("Success logging in!");
@@ -101,7 +128,10 @@ export default function SignInSignUpScreen({ navigation }) {
       <View />
       <View>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={styles.button} onPress={login}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={isLogin ? login : signUp}
+          >
             <Text style={styles.buttonText}>
               {isLogin ? "Log In" : "Sign up"}
             </Text>
