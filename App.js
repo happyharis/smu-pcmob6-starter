@@ -22,11 +22,12 @@ export default function AppWrapper() {
 function App() {
   const [loading, setLoading] = useState(true);
   const signedIn = useSelector((state) => state.auth.signedIn);
+  const token = useSelector((state) => state.token.token);
 
   const dispatch = useDispatch();
 
   async function loadToken() {
-    const token = await AsyncStorage.getItem("token");
+    // const token = await AsyncStorage.getItem("token");
     if (token) {
       dispatch(signInAction());
     }

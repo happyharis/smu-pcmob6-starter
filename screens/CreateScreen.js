@@ -1,22 +1,15 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import axios from "axios";
-import { API, API_CREATE } from "../constants/API";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { lightStyles, commonStyles } from "../styles/commonStyles";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { commonStyles, lightStyles } from "../styles/commonStyles";
 
 export default function CreateScreen({ navigation }) {
-
-  const styles = {...lightStyles, ...commonStyles}
-
+  const styles = { ...lightStyles, ...commonStyles };
 
   return (
     <View style={styles.container}>
-      <Text>
-        Create Post Screen
-      </Text>
+      <Text>Create Post Screen</Text>
     </View>
-  )
+  );
 }
 
 const additionalStyles = StyleSheet.create({
@@ -29,6 +22,6 @@ const additionalStyles = StyleSheet.create({
   label: {
     fontSize: 28,
     marginBottom: 10,
-    marginLeft: 5
-  }
+    marginLeft: 5,
+  },
 });

@@ -11,11 +11,13 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { API, API_POSTS } from "../constants/API";
 import { lightStyles } from "../styles/commonStyles";
+import { useSelector } from "react-redux";
 
 export default function IndexScreen({ navigation, route }) {
   const [posts, setPosts] = useState([]);
   const styles = lightStyles;
   const [refreshing, setRefreshing] = useState(false);
+  const token = useSelector((state) => state.token.token);
 
   async function onRefresh() {
     setRefreshing(true);
@@ -54,7 +56,7 @@ export default function IndexScreen({ navigation, route }) {
   }, []);
 
   async function getPosts() {
-    const token = await AsyncStorage.getItem("token");
+    // const token = await AsyncStorage.getItem("token");
     try {
       const response = await axios.get(API + API_POSTS, {
         headers: { Authorization: `JWT ${token}` },

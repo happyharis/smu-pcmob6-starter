@@ -13,18 +13,19 @@ import { lightStyles } from "../styles/commonStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API, API_WHOAMI } from "../constants/API";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signOutAction } from "../redux/ducks/blogAuth";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
+  const token = useSelector((state) => state.token.token);
   const dispatch = useDispatch();
 
   const styles = lightStyles;
 
   async function getUsername() {
     console.log("---- Getting user name ----");
-    const token = await AsyncStorage.getItem("token");
+    // const token = await AsyncStorage.getItem("token");
     console.log(`Token is ${token}`);
     try {
       const response = await axios.get(API + API_WHOAMI, {

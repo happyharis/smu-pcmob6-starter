@@ -14,8 +14,9 @@ import {
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInAction } from "../redux/ducks/blogAuth";
+import { setToken } from "../redux/ducks/token";
 
 if (
   Platform.OS === "android" &&
@@ -79,7 +80,9 @@ export default function SignInSignUpScreen({ navigation }) {
       });
       console.log("Success logging in!");
       // console.log(response);
-      await AsyncStorage.setItem("token", response.data.access_token);
+      // await AsyncStorage.setItem("token", response.data.access_token);
+
+      dispatch(setToken(response.data.access_token));
       setLoading(false);
       dispatch(signInAction());
     } catch (error) {
