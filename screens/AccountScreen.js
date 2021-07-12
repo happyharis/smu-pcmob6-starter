@@ -1,13 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, TouchableOpacity, Text, View, Switch, Animated, TouchableWithoutFeedback } from "react-native";
+import {
+  ActivityIndicator,
+  TouchableOpacity,
+  Text,
+  View,
+  Switch,
+  Animated,
+  TouchableWithoutFeedback,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { lightStyles } from "../styles/commonStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { API, API_WHOAMI } from "../constants/API";
+import { useDispatch } from "react-redux";
+import { signOutAction } from "../redux/ducks/blogAuth";
 
 export default function AccountScreen({ navigation }) {
-
   const [username, setUsername] = useState(null);
+  const dispatch = useDispatch();
 
   const styles = lightStyles;
 
@@ -27,7 +38,7 @@ export default function AccountScreen({ navigation }) {
         console.log(error.response.data);
         if (error.response.data.status_code === 401) {
           signOut();
-          navigation.navigate("SignInSignUp")
+          navigation.navigate("SignInSignUp");
         }
       } else {
         console.log(error);
@@ -38,10 +49,21 @@ export default function AccountScreen({ navigation }) {
 
   function signOut() {
     AsyncStorage.removeItem("token");
-    navigation.navigate("SignInSignUp");
+    dispatch(signOutAction());
   }
 
   useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={signOut}>
+          <FontAwesome
+            name="sign-out"
+            size={24}
+            style={{ color: styles.headerTint, marginRight: 15 }}
+          />
+        </TouchableOpacity>
+      ),
+    });
     console.log("Setting up nav listener");
     // Check for when we come back to this screen
     const removeListener = navigation.addListener("focus", () => {
@@ -55,12 +77,8 @@ export default function AccountScreen({ navigation }) {
 
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
-      <Text style={{marginTop: 20}}>
-        Account Screen
-      </Text>
-      <Text>
-        {username}
-      </Text>
+      <Text style={{ marginTop: 20 }}>Account Screen</Text>
+      <Text>{username}</Text>
     </View>
   );
 }

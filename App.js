@@ -5,17 +5,30 @@ import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SignInSignUpScreen from "./screens/SignInSignUpScreen";
 import TabStack from "./components/TabStack";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./redux/createStore";
+import { signInAction, signOutAction } from "./redux/ducks/blogAuth";
 
 const Stack = createStackNavigator();
 
-export default function App() {
+export default function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+
+function App() {
   const [loading, setLoading] = useState(true);
-  const [signedIn, setSignedIn] = useState(false);
+  const signedIn = useSelector((state) => state.auth.signedIn);
+
+  const dispatch = useDispatch();
 
   async function loadToken() {
     const token = await AsyncStorage.getItem("token");
     if (token) {
-      setSignedIn(true);
+      dispatch(signInAction());
     }
     setLoading(false);
   }
@@ -24,27 +37,28 @@ export default function App() {
     loadToken();
   }, []);
 
-  return loading ? (
+  if (loading)
     <View style={styles.container}>
       <ActivityIndicator />
-    </View>
-  ) : !signedIn ? (
+    </View>;
+
+  return (
     <NavigationContainer>
-      <Stack.Navigator
-        mode="modal"
-        headerMode="none"
-        initialRouteName="SignInSignUp"
-      >
-        <Stack.Screen
-          component={SignInSignUpScreen}
-          name="SignInSignUp"
-          options={{ animationEnabled: false }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-  ) : (
-    <NavigationContainer>
-      <TabStack />
+      {signedIn ? (
+        <TabStack />
+      ) : (
+        <Stack.Navigator
+          mode="modal"
+          headerMode="none"
+          initialRouteName="SignInSignUp"
+        >
+          <Stack.Screen
+            component={SignInSignUpScreen}
+            name="SignInSignUp"
+            options={{ animationEnabled: false }}
+          />
+        </Stack.Navigator>
+      )}
     </NavigationContainer>
   );
 }

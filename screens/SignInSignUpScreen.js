@@ -14,6 +14,8 @@ import {
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { signInAction } from "../redux/ducks/blogAuth";
 
 if (
   Platform.OS === "android" &&
@@ -29,6 +31,7 @@ export default function SignInSignUpScreen({ navigation }) {
   const [errorText, setErrorText] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+  const dispatch = useDispatch();
 
   if (
     Platform.OS === "android" &&
@@ -78,7 +81,7 @@ export default function SignInSignUpScreen({ navigation }) {
       // console.log(response);
       await AsyncStorage.setItem("token", response.data.access_token);
       setLoading(false);
-      navigation.navigate("Logged In");
+      dispatch(signInAction());
     } catch (error) {
       setLoading(false);
       console.log("Error logging in!");
