@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  ActivityIndicator,
-  TouchableOpacity,
-  Text,
-  View,
-  Switch,
-  Animated,
-  TouchableWithoutFeedback,
-} from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-import { lightStyles } from "../styles/commonStyles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { API, API_WHOAMI } from "../constants/API";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch } from "react-redux";
+import { API, API_WHOAMI } from "../constants/API";
 import { signOutAction } from "../redux/ducks/blogAuth";
+import { lightStyles } from "../styles/commonStyles";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
