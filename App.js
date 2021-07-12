@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SignInSignUpScreen from "./screens/SignInSignUpScreen";
@@ -22,6 +26,7 @@ export default function AppWrapper() {
 function App() {
   const [loading, setLoading] = useState(true);
   const signedIn = useSelector((state) => state.auth.signedIn);
+  const isDarkMode = useSelector((state) => state.prefs.darkMode);
 
   const dispatch = useDispatch();
 
@@ -43,7 +48,7 @@ function App() {
     </View>;
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
       {signedIn ? (
         <TabStack />
       ) : (

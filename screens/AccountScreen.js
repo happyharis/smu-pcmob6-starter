@@ -17,7 +17,6 @@ import { lightStyles } from "../styles/commonStyles";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
-  const [isEnabled, setIsEnabled] = useState(false);
   const isDarkMode = useSelector((state) => state.prefs.darkMode);
   const dispatch = useDispatch();
 
