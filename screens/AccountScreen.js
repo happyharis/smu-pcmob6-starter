@@ -13,14 +13,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { API, API_WHOAMI } from "../constants/API";
 import { toggleDarkMode } from "../redux/ducks/accountPrefs";
 import { signOutAction } from "../redux/ducks/blogAuth";
-import { lightStyles } from "../styles/commonStyles";
+import { darkStyles, lightStyles } from "../styles/commonStyles";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
   const isDarkMode = useSelector((state) => state.prefs.darkMode);
   const dispatch = useDispatch();
 
-  const styles = lightStyles;
+  const styles = isDarkMode ? darkStyles : lightStyles;
 
   async function getUsername() {
     console.log("---- Getting user name ----");
