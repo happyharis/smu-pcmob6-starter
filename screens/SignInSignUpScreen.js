@@ -9,6 +9,7 @@ import {
   LayoutAnimation,
   ActivityIndicator,
   Keyboard,
+  Platform,
 } from "react-native";
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -28,6 +29,13 @@ export default function SignInSignUpScreen({ navigation }) {
   const [errorText, setErrorText] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLogin, setIsLogin] = useState(true);
+
+  if (
+    Platform.OS === "android" &&
+    UIManager.setLayoutAnimationEnabledExperimental
+  ) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
 
   async function login() {
     console.log("---- Login time ----");
@@ -108,6 +116,11 @@ export default function SignInSignUpScreen({ navigation }) {
       <Text style={styles.errorText}>{errorText}</Text>
       <TouchableOpacity
         onPress={() => {
+          LayoutAnimation.configureNext({
+            duration: 700,
+            create: { type: "linear", property: "opacity" },
+            update: { type: "spring", springDamping: 0.4 },
+          });
           setIsLogin(!isLogin);
           setErrorText("");
         }}
