@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import SignInSignUpScreen from "./screens/SignInSignUpScreen";
+import TabStack from "./components/TabStack";
 
 const Stack = createStackNavigator();
 
@@ -27,15 +28,23 @@ export default function App() {
     <View style={styles.container}>
       <ActivityIndicator />
     </View>
-  ) : (
+  ) : !signedIn ? (
     <NavigationContainer>
       <Stack.Navigator
         mode="modal"
         headerMode="none"
         initialRouteName="SignInSignUp"
       >
-        <Stack.Screen component={SignInSignUpScreen} name="SignInSignUp" />
+        <Stack.Screen
+          component={SignInSignUpScreen}
+          name="SignInSignUp"
+          options={{ animationEnabled: false }}
+        />
       </Stack.Navigator>
+    </NavigationContainer>
+  ) : (
+    <NavigationContainer>
+      <TabStack />
     </NavigationContainer>
   );
 }
