@@ -15,13 +15,6 @@ import { lightStyles } from "../styles/commonStyles";
 export default function IndexScreen({ navigation, route }) {
   const [posts, setPosts] = useState([]);
   const styles = lightStyles;
-  const [refreshing, setRefreshing] = useState(false);
-
-  async function onRefresh() {
-    setRefreshing(true);
-    const response = await getPosts();
-    setRefreshing(false);
-  }
 
   // This is to set up the top right button
   useEffect(() => {
@@ -107,13 +100,6 @@ export default function IndexScreen({ navigation, route }) {
         renderItem={renderItem}
         style={{ width: "100%" }}
         keyExtractor={(item) => item.id.toString()}
-        refreshControl={
-          <RefreshControl
-            colors={["#9Bd35A", "#689F38"]}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        }
       />
     </View>
   );
