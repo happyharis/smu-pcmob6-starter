@@ -73,7 +73,11 @@ export default function IndexScreen({ navigation, route }) {
   }
 
   function addPost() {
-    navigation.navigate("Add", posts);
+    navigation.navigate("Add");
+  }
+
+  function editPost(post) {
+    navigation.navigate("Edit", { post });
   }
 
   async function deletePost(id) {
@@ -106,10 +110,18 @@ export default function IndexScreen({ navigation, route }) {
             borderBottomColor: "#ccc",
             borderBottomWidth: 1,
             flexDirection: "row",
-            justifyContent: "space-between",
           }}
         >
           <Text style={styles.text}>{item.title}</Text>
+          <View style={{ flex: 1 }}></View>
+          <TouchableOpacity
+            onPress={() => {
+              editPost(item);
+            }}
+          >
+            <FontAwesome name="edit" size={20} color="#a80000" />
+          </TouchableOpacity>
+          <View style={{ padding: 10 }}></View>
           <TouchableOpacity onPress={deletePost}>
             <FontAwesome name="trash" size={20} color="#a80000" />
           </TouchableOpacity>
