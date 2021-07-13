@@ -9,7 +9,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { API, API_POSTS } from "../constants/API";
+import { API, API_POSTS, API_POST } from "../constants/API";
 import { darkStyles, lightStyles } from "../styles/commonStyles";
 import { useSelector } from "react-redux";
 
@@ -83,7 +83,7 @@ export default function IndexScreen({ navigation, route }) {
   async function deletePost(id) {
     const token = await AsyncStorage.getItem("token");
     try {
-      await axios.delete(API + API_POST + id, {
+      await axios.delete(API + API_POSTS + "/" + id, {
         headers: { Authorization: `JWT ${token}` },
       });
       getPosts();
@@ -122,7 +122,11 @@ export default function IndexScreen({ navigation, route }) {
             <FontAwesome name="edit" size={20} color="#a80000" />
           </TouchableOpacity>
           <View style={{ padding: 10 }}></View>
-          <TouchableOpacity onPress={deletePost}>
+          <TouchableOpacity
+            onPress={() => {
+              deletePost(item.id);
+            }}
+          >
             <FontAwesome name="trash" size={20} color="#a80000" />
           </TouchableOpacity>
         </View>
