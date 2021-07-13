@@ -72,9 +72,25 @@ export default function IndexScreen({ navigation, route }) {
     }
   }
 
-  function addPost() {}
+  function addPost() {
+    navigation.navigate("Add", posts);
+  }
 
-  function deletePost() {}
+  async function deletePost(id) {
+    const token = await AsyncStorage.getItem("token");
+    try {
+      await axios.delete(API + API_POST + id, {
+        headers: { Authorization: `JWT ${token}` },
+      });
+      getPosts();
+      return "completed";
+    } catch (error) {
+      console.log(error.response.data);
+      if ((error.response.data.error = "Invalid token")) {
+        navigation.navigate("SignInSignUp");
+      }
+    }
+  }
 
   // The function to render each row in our FlatList
   function renderItem({ item }) {
