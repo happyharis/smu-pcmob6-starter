@@ -76,7 +76,11 @@ export default function CameraScreen({ navigation }) {
               onPress={() => takePicture()}
               style={[
                 additionalStyles.circleButton,
-                { backgroundColor: "white" },
+                {
+                  backgroundColor: "white",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
               ]}
             >
               <FontAwesome name="camera" size={30} />
