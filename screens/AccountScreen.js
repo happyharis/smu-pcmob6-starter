@@ -10,7 +10,10 @@ import {
   TouchableOpacity,
   View,
   Image,
+  TouchableWithoutFeedback,
+  Animated,
 } from "react-native";
+
 import { useDispatch, useSelector } from "react-redux";
 import { API, API_WHOAMI } from "../constants/API";
 import { resetDarkMode, toggleDarkMode } from "../redux/ducks/accountPrefs";
@@ -28,6 +31,25 @@ export default function AccountScreen({ navigation }) {
     ...commonStyles,
     ...(isDarkMode ? darkStyles : lightStyles),
   };
+
+  const picSize = new Animated.Value(200);
+
+  function changePicSize() {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(picSize, {
+          toValue: 300,
+          duration: 2500,
+          useNativeDriver: false,
+        }),
+        Animated.timing(picSize, {
+          toValue: 200,
+          duration: 2500,
+          useNativeDriver: false,
+        }),
+      ])
+    ).start();
+  }
 
   async function getUsername() {
     console.log("---- Getting user name ----");
@@ -86,15 +108,32 @@ export default function AccountScreen({ navigation }) {
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
       <Text style={{ marginTop: 20 }}>Account Screen</Text>
-      <Image
-        source={{ uri: profilePicture?.uri }}
-        style={{ width: 250, height: 250, borderRadius: 200 }}
-      />
+      <View
+        style={{
+          height: profilePicture == null ? 0 : 320,
+          justifyContent: "center",
+        }}
+      >
+        {profilePicture == null ? (
+          <View />
+        ) : (
+          <TouchableWithoutFeedback onPress={changePicSize}>
+            <Animated.Image
+              source={{ uri: profilePicture?.uri }}
+              style={{ width: picSize, height: picSize, borderRadius: 200 }}
+            />
+          </TouchableWithoutFeedback>
+        )}
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("Camera")}
       >
-        <Text style={styles.buttonText}>Edit Profile Picture</Text>
+        <Text style={styles.buttonText}>
+          {profilePicture == null
+            ? "Take a profile picture"
+            : "Edit Profile Picture"}
+        </Text>
       </TouchableOpacity>
 
       <Text>{username}</Text>
