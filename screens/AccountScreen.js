@@ -9,19 +9,25 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { API, API_WHOAMI } from "../constants/API";
 import { resetDarkMode, toggleDarkMode } from "../redux/ducks/accountPrefs";
 import { signOutAction } from "../redux/ducks/blogAuth";
-import { darkStyles, lightStyles } from "../styles/commonStyles";
+import { commonStyles, darkStyles, lightStyles } from "../styles/commonStyles";
 
 export default function AccountScreen({ navigation }) {
   const [username, setUsername] = useState(null);
   const isDarkMode = useSelector((state) => state.prefs.darkMode);
+  const profilePicture = useSelector((state) => state.prefs.profilePicture);
+
   const dispatch = useDispatch();
 
-  const styles = isDarkMode ? darkStyles : lightStyles;
+  const styles = {
+    ...commonStyles,
+    ...(isDarkMode ? darkStyles : lightStyles),
+  };
 
   async function getUsername() {
     console.log("---- Getting user name ----");
@@ -80,6 +86,16 @@ export default function AccountScreen({ navigation }) {
   return (
     <View style={[styles.container, { alignItems: "center" }]}>
       <Text style={{ marginTop: 20 }}>Account Screen</Text>
+      <Image
+        source={{ uri: profilePicture?.uri }}
+        style={{ width: 250, height: 250, borderRadius: 200 }}
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("Camera")}
+      >
+        <Text style={styles.buttonText}>Edit Profile Picture</Text>
+      </TouchableOpacity>
 
       <Text>{username}</Text>
       <View>
