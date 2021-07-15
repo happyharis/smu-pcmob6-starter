@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StatusBar, StyleSheet, View } from "react-native";
 import {
   DarkTheme,
   DefaultTheme,
@@ -49,6 +49,7 @@ function App() {
 
   return (
     <NavigationContainer theme={isDarkMode ? DarkTheme : DefaultTheme}>
+      <StatusBar style={isDarkMode ? "light-content" : "dark-content"} />
       {signedIn ? (
         <TabStack />
       ) : (
