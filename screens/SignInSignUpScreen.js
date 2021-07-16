@@ -9,6 +9,7 @@ import {
   LayoutAnimation,
   ActivityIndicator,
   Keyboard,
+  Platform,
 } from "react-native";
 import { API, API_LOGIN, API_SIGNUP } from "../constants/API";
 import AsyncStorage from "@react-native-async-storage/async-storage";
